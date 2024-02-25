@@ -1,4 +1,4 @@
-package main
+package tabletopsimulator
 
 type Transform struct {
 	ScaleX float32 `json:"scaleX"`
