@@ -37,6 +37,15 @@ type CardState struct {
 	LuaScript   string               `json:"LuaScript"`
 }
 
+type Decal struct {
+	Transform   ExhaustiveTransform `json:"Transform"`
+	CustomDecal struct {
+		Name     string  `json:"Name"`
+		ImageURL string  `json:"ImageURL"`
+		Size     float32 `json:"Size"`
+	} `json:"CustomDecal"`
+}
+
 type Card struct {
 	Name        string               `json:"Name"`
 	Transform   Transform            `json:"Transform"`
@@ -45,6 +54,7 @@ type Card struct {
 	Memo        string               `json:"Memo"`
 	States      map[string]CardState `json:"States"`
 	LuaScript   string               `json:"LuaScript"`
+	Decals      []Decal              `json:"Decals"`
 }
 
 type SingleCard struct {
@@ -57,6 +67,7 @@ type SingleCard struct {
 	LuaScript   string               `json:"LuaScript"`
 	CustomDeck  map[string]CardImage `json:"CustomDeck"`
 	CardID      uint32               `json:"CardID"`
+	Decals      []Decal              `json:"Decals"`
 }
 
 type DeckOrSingleCard interface {
@@ -77,9 +88,26 @@ type CardBag struct {
 	BagOptions       CardBagOptions     `json:"Bag,omitempty"`
 }
 
-func NewSingleCardObject(nickname string, description string, memo string, customDeck CardImage) SingleCard {
-	var w = SingleCard{Name: "Card", Transform: Transform{ScaleX: 1.0, ScaleY: 1.0, ScaleZ: 1.0}, Nickname: nickname, Description: description, Memo: memo, States: make(map[string]CardState), CardID: 1, LuaScript: "", CustomDeck: make(map[string]CardImage)}
+func NewSingleCardObject(nickname string, description string, memo string, customDeck CardImage, foil bool) SingleCard {
+	var w = SingleCard{Name: "Card", Transform: Transform{ScaleX: 1.0, ScaleY: 1.0, ScaleZ: 1.0}, Nickname: nickname, Description: description, Memo: memo, States: make(map[string]CardState), CardID: 1, LuaScript: "", CustomDeck: make(map[string]CardImage), Decals: []Decal{{CustomDecal: struct {
+		Name     string  "json:\"Name\""
+		ImageURL string  "json:\"ImageURL\""
+		Size     float32 "json:\"Size\""
+	}{Name: "StarFoil", ImageURL: "https://i.imgur.com/QnxyMMK.png", Size: 1.0}, Transform: ExhaustiveTransform{
+		PosX:   0.0,
+		PosY:   0.25,
+		PosZ:   0.0,
+		RotX:   90.0,
+		RotY:   180.0,
+		RotZ:   0.0,
+		ScaleX: 0.7006438 * 3.1,
+		ScaleY: 0.9999966 * 3.1,
+		ScaleZ: 15.3846169 * 3.1,
+	}}}}
 	w.CustomDeck["100"] = customDeck
+	if !foil {
+		w.Decals = w.Decals[:0]
+	}
 	return w
 }
 
@@ -88,8 +116,25 @@ func NewDeckObject() Deck {
 	return w
 }
 
-func NewCardEntry(nickname string, description string, memo string) Card {
-	var c = Card{Name: "Card", Transform: Transform{ScaleX: 1.0, ScaleY: 1.0, ScaleZ: 1.0}, Nickname: nickname, Description: description, Memo: memo, States: map[string]CardState{}, LuaScript: ""}
+func NewCardEntry(nickname string, description string, memo string, foil bool) Card {
+	var c = Card{Name: "Card", Transform: Transform{ScaleX: 1.0, ScaleY: 1.0, ScaleZ: 1.0}, Nickname: nickname, Description: description, Memo: memo, States: map[string]CardState{}, LuaScript: "", Decals: []Decal{{CustomDecal: struct {
+		Name     string  "json:\"Name\""
+		ImageURL string  "json:\"ImageURL\""
+		Size     float32 "json:\"Size\""
+	}{Name: "StarFoil", ImageURL: "https://i.imgur.com/QnxyMMK.png", Size: 1.0}, Transform: ExhaustiveTransform{
+		PosX:   0.0,
+		PosY:   0.25,
+		PosZ:   0.0,
+		RotX:   90.0,
+		RotY:   180.0,
+		RotZ:   0.0,
+		ScaleX: 0.7006438 * 3.1,
+		ScaleY: 0.9999966 * 3.1,
+		ScaleZ: 15.3846169 * 3.1,
+	}}}}
+	if !foil {
+		c.Decals = c.Decals[:0]
+	}
 	return c
 }
 
