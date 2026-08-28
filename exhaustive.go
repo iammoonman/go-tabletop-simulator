@@ -4,21 +4,23 @@ type ExhaustiveTransform struct {
 	ScaleX float32 `json:"scaleX"`
 	ScaleY float32 `json:"scaleY"`
 	ScaleZ float32 `json:"scaleZ"`
-	RotX   float32 `json:"rotX"`
-	RotY   float32 `json:"rotY"`
-	RotZ   float32 `json:"rotZ"`
-	PosX   float32 `json:"posX"`
-	PosY   float32 `json:"posY"`
-	PosZ   float32 `json:"posZ"`
+	RotX   float32 `json:"rotX,omitempty"`
+	RotY   float32 `json:"rotY,omitempty"`
+	RotZ   float32 `json:"rotZ,omitempty"`
+	PosX   float32 `json:"posX,omitempty"`
+	PosY   float32 `json:"posY,omitempty"`
+	PosZ   float32 `json:"posZ,omitempty"`
 }
+
+var DefaultTransform ExhaustiveTransform = ExhaustiveTransform{ScaleX: 1.0, ScaleY: 1.0, ScaleZ: 1.0}
 
 type ExhaustiveCustomDeck struct {
 	FaceURL      string `json:"FaceURL"`
 	BackURL      string `json:"BackURL"`
 	NumWidth     int    `json:"NumWidth"`
 	NumHeight    int    `json:"NumHeight"`
-	BackIsHidden bool   `json:"BackIsHidden"`
-	UniqueBack   bool   `json:"UniqueBack"`
+	BackIsHidden bool   `json:"BackIsHidden,omitempty"`
+	UniqueBack   bool   `json:"UniqueBack,omitempty"`
 }
 
 type ExhaustiveVector struct {
@@ -26,7 +28,6 @@ type ExhaustiveVector struct {
 	Y float32 `json:"y"`
 	Z float32 `json:"z"`
 }
-
 type ExhaustiveColor struct {
 	R float32 `json:"R"`
 	G float32 `json:"G"`
@@ -79,12 +80,18 @@ type ExhaustiveTurns struct {
 	TurnColor           string   `json:"TurnColor"`
 }
 
+type ExhaustiveComponentTag struct {
+	Displayed  string `json:"displayed"`
+	Normalized string `json:"normalized"`
+}
+
 type ExhaustiveComponentTags struct {
-	Labels []string `json:"Labels"`
+	Labels []ExhaustiveComponentTag `json:"Labels"`
 }
 
 type ExhaustiveSnapPoint struct {
 	Position ExhaustiveVector `json:"Position"`
+	Rotation ExhaustiveVector `json:"Rotation,omitempty"`
 }
 
 type ExhaustiveCamera struct {
@@ -121,37 +128,40 @@ type ExhaustiveCustomDecal struct {
 }
 
 type ExhaustiveSave struct {
-	SaveName       string                        `json:"SaveName"`
-	EpochTime      int                           `json:"EpochTime"`
-	GameComplexity string                        `json:"GameComplexity"`
-	Tags           []string                      `json:"Tags"`
-	GameMode       string                        `json:"GameMode"`
-	Gravity        float32                       `json:"Gravity"`
-	PlayArea       float32                       `json:"PlayArea"`
-	ComponentTags  ExhaustiveComponentTags       `json:"ComponentTags"`
-	Date           string                        `json:"Date"`
-	Table          string                        `json:"Table"`
-	TableURL       string                        `json:"TableURL"`
-	Sky            string                        `json:"Sky"`
-	SkyURL         string                        `json:"SkyURL"`
-	Note           string                        `json:"Note"`
-	Rules          string                        `json:"Rules"`
-	XmlUI          string                        `json:"XmlUI"`
-	CustomUIAssets string                        `json:"CustomUIAssets"`
-	LuaScript      string                        `json:"LuaScript"`
-	LuaScriptState string                        `json:"LuaScriptState"`
-	Grid           ExhaustiveGrid                `json:"Grid"`
-	LightingState  ExhaustiveLighting            `json:"LightingState"`
-	HandsState     ExhaustiveHands               `json:"HandsState"`
-	TurnsState     ExhaustiveTurns               `json:"TurnsState"`
-	VectorLines    []ExhaustiveVectorLine        `json:"VectorLines"`
+	CameraStates   []ExhaustiveCamera            `json:"CameraStates,omitempty"`
+	ComponentTags  ExhaustiveComponentTags       `json:"ComponentTags,omitempty"`
+	CustomUIAssets string                        `json:"CustomUIAssets,omitempty"`
+	Date           string                        `json:"Date,omitempty"`
+	DecalPallet    []ExhaustiveCustomDecal       `json:"DecalPallet,omitempty"`
+	Decals         []ExhaustiveDecalState        `json:"Decals,omitempty"`
+	EpochTime      int                           `json:"EpochTime,omitempty"`
+	GameComplexity string                        `json:"GameComplexity,omitempty"`
+	GameMode       string                        `json:"GameMode,omitempty"`
+	GameType       string                        `json:"GameType,omitempty"`
+	Gravity        float32                       `json:"Gravity,omitempty"`
+	Grid           ExhaustiveGrid                `json:"Grid,omitempty"`
+	Hands          ExhaustiveHands               `json:"Hands,omitempty"`
+	LightingState  ExhaustiveLighting            `json:"LightingState,omitempty"`
+	LuaScript      string                        `json:"LuaScript,omitempty"`
+	LuaScriptState string                        `json:"LuaScriptState,omitempty"`
+	Note           string                        `json:"Note,omitempty"`
 	ObjectStates   []ExhaustiveObjectState       `json:"ObjectStates"`
-	SnapPoints     []ExhaustiveSnapPoint         `json:"SnapPoints"`
-	DecalPallet    []ExhaustiveCustomDecal       `json:"DecalPallet"`
-	Decals         []ExhaustiveDecalState        `json:"Decals"`
-	TabStates      map[string]ExhaustiveTabState `json:"TabStates"`
-	CameraStates   []ExhaustiveCamera            `json:"CameraStates"`
-	VersionNumber  string                        `json:"VersionNumber"`
+	PlayArea       float32                       `json:"PlayArea,omitempty"`
+	PlayerCounts   []int                         `json:"PlayerCounts,omitempty"`
+	PlayingTime    []int                         `json:"PlayingTime,omitempty"`
+	Rules          string                        `json:"Rules,omitempty"`
+	SaveName       string                        `json:"SaveName,omitempty"`
+	Sky            string                        `json:"Sky,omitempty"`
+	SkyURL         string                        `json:"SkyURL,omitempty"`
+	SnapPoints     []ExhaustiveSnapPoint         `json:"SnapPoints,omitempty"`
+	Table          string                        `json:"Table,omitempty"`
+	TableURL       string                        `json:"TableURL,omitempty"`
+	TabStates      map[string]ExhaustiveTabState `json:"TabStates,omitempty"`
+	Tags           []string                      `json:"Tags,omitempty"`
+	Turns          ExhaustiveTurns               `json:"Turns,omitempty"`
+	VectorLines    []ExhaustiveVectorLine        `json:"VectorLines,omitempty"`
+	VersionNumber  string                        `json:"VersionNumber,omitempty"`
+	XmlUI          string                        `json:"XmlUI,omitempty"`
 }
 
 type ExhaustiveRotationValueState struct {
@@ -277,6 +287,25 @@ type ExhaustiveRigidbodyState struct {
 	AngularDrag float32 `json:"AngularDrag"`
 	UseGravity  bool    `json:"UseGravity"`
 }
+type ExhaustiveLimits struct {
+	MinBounce         float32 `json:"minBounce"`
+	MaxBounce         float32 `json:"maxBounce"`
+	Min               float32 `json:"min"`
+	Max               float32 `json:"max"`
+	Bounciness        float32 `json:"bounciness"`
+	BounceMinVelocity float32 `json:"bounceMinVelocity"`
+	ContactDistance   float32 `json:"contactDistance"`
+}
+type ExhaustiveMotor struct {
+	TargetVelocity float32 `json:"targetVelocity"`
+	Force          float32 `json:"force"`
+	FreeSpin       bool    `json:"freeSpin"`
+}
+type ExhaustiveSpring struct {
+	Spring         float32 `json:"spring"`
+	Damper         float32 `json:"damper"`
+	TargetPosition float32 `json:"targetPosition"`
+}
 type ExhaustiveJointFixedState struct {
 	ConnectedBodyGUID string           `json:"ConnectedBodyGUID"`
 	EnableCollision   bool             `json:"EnableCollision"`
@@ -295,10 +324,10 @@ type ExhaustiveJointHingeState struct {
 	BreakForce        float32          `json:"BreakForce"`
 	BreakTorgue       float32          `json:"BreakTorgue"`
 	UseLimits         bool             `json:"UseLimits"`
-	// Limits            string
-	UseMotor bool `json:"UseMotor"`
-	// Motor             string
-	// Spring            string
+	UseMotor          bool             `json:"UseMotor"`
+	Limits            ExhaustiveLimits `json:"Limits"`
+	Motor             ExhaustiveMotor  `json:"Motor"`
+	Spring            ExhaustiveSpring `json:"Spring"`
 }
 type ExhaustiveJointSpringState struct {
 	ConnectedBodyGUID string           `json:"ConnectedBodyGUID"`
@@ -321,58 +350,59 @@ type ExhaustiveCustomAssetState struct {
 type ExhaustiveObjectState struct {
 	Name                string                              `json:"Name"`
 	Transform           ExhaustiveTransform                 `json:"Transform"`
-	Nickname            string                              `json:"Nickname"`
-	Description         string                              `json:"Description"`
-	ColorDiffuse        ExhaustiveColor                     `json:"ColorDiffuse"`
-	Locked              bool                                `json:"Locked"`
-	Grid                bool                                `json:"Grid"`
-	Snap                bool                                `json:"Snap"`
-	Autoraise           bool                                `json:"Autoraise"`
-	Sticky              bool                                `json:"Sticky"`
-	Tooltip             bool                                `json:"Tooltip"`
-	GridProjection      bool                                `json:"GridProjection"`
-	HideWhenFaceDown    bool                                `json:"HideWhenFaceDown"`
-	Hands               bool                                `json:"Hands"`
-	AltSound            bool                                `json:"AltSound"`
-	MaterialIndex       int                                 `json:"MaterialIndex"`
-	MeshIndex           int                                 `json:"MeshIndex"`
-	Layer               int                                 `json:"Layer"`
-	Number              int                                 `json:"Number"`
-	CardID              int                                 `json:"CardID"`
-	SidewaysCard        bool                                `json:"SidewaysCard"`
-	RPGmode             bool                                `json:"RPGmode"`
-	RPGdead             bool                                `json:"RPGdead"`
-	FogColor            string                              `json:"FogColor"`
-	FogHidePointers     bool                                `json:"FogHidePointers"`
-	FogReverseHiding    bool                                `json:"FogReverseHiding"`
-	FogSeethrough       bool                                `json:"FogSeethrough"`
-	DeckIDs             []int                               `json:"DeckIDs"`
-	CustomDeck          map[string]ExhaustiveCustomDeck     `json:"CustomDeck"`
-	CustomMesh          ExhaustiveCustomMeshState           `json:"CustomMesh"`
-	CustomImage         ExhaustiveCustomImageState          `json:"CustomImage"`
-	CustomAssetbundle   ExhaustiveCustomAssetbundleState    `json:"CustomAssetbundle"`
-	FogOfWar            ExhaustiveFogOfWarSaveState         `json:"FogOfWar"`
-	FogOfWarRevealer    ExhaustiveFogOfWarRevealerSaveState `json:"FogOfWarRevealer"`
-	Clock               ExhaustiveClockSaveState            `json:"Clock"`
-	Counter             ExhaustiveCounterState              `json:"Counter"`
-	Tablet              ExhaustiveTabletState               `json:"Tablet"`
-	Mp3Player           ExhaustiveMp3PlayerState            `json:"Mp3Player"`
-	Calculator          ExhaustiveCalculatorState           `json:"Calculator"`
-	Text                ExhaustiveTextState                 `json:"Text"`
-	XmlUI               string                              `json:"XmlUI"`
-	CustomUIAssets      []ExhaustiveCustomAssetState        `json:"CustomUIAssets"`
-	LuaScript           string                              `json:"LuaScript"`
-	LuaScriptState      string                              `json:"LuaScriptState"`
-	ContainedObjects    []ExhaustiveObjectState             `json:"ContainedObjects"`
-	PhysicsMaterial     ExhaustivePhysicsMaterialState      `json:"PhysicsMaterial"`
-	Rigidbody           ExhaustiveRigidbodyState            `json:"Rigidbody"`
-	JointFixed          ExhaustiveJointFixedState           `json:"JointFixed"`
-	JointHinge          ExhaustiveJointHingeState           `json:"JointHinge"`
-	JointSpring         ExhaustiveJointSpringState          `json:"JointSpring"`
-	GUID                string                              `json:"GUID"`
-	AttachedSnapPoints  []ExhaustiveSnapPoint               `json:"AttachedSnapPoints"`
-	AttachedVectorLines []ExhaustiveVectorLine              `json:"AttachedVectorLines"`
-	AttachedDecals      []ExhaustiveDecalState              `json:"AttachedDecals"`
-	States              map[string]ExhaustiveObjectState    `json:"States"`
-	RotationValues      []ExhaustiveRotationValueState      `json:"RotationValues"`
+	XmlUI               string                              `json:"XmlUI,omitempty"`
+	AltLookAngle        ExhaustiveVector                    `json:"AltLookAngle,omitempty"`
+	AltSound            bool                                `json:"AltSound,omitempty"`
+	AttachedDecals      []ExhaustiveDecalState              `json:"AttachedDecals,omitempty"`
+	AttachedSnapPoints  []ExhaustiveSnapPoint               `json:"AttachedSnapPoints,omitempty"`
+	AttachedVectorLines []ExhaustiveVectorLine              `json:"AttachedVectorLines,omitempty"`
+	Autoraise           bool                                `json:"Autoraise,omitempty"`
+	Calculator          ExhaustiveCalculatorState           `json:"Calculator,omitempty"`
+	CardID              int                                 `json:"CardID,omitempty"`
+	Clock               ExhaustiveClockSaveState            `json:"Clock,omitempty"`
+	ColorDiffuse        ExhaustiveColor                     `json:"ColorDiffuse,omitempty"`
+	ContainedObjects    []ExhaustiveObjectState             `json:"ContainedObjects,omitempty"`
+	Counter             ExhaustiveCounterState              `json:"Counter,omitempty"`
+	CustomAssetbundle   ExhaustiveCustomAssetbundleState    `json:"CustomAssetbundle,omitempty"`
+	CustomDeck          map[string]ExhaustiveCustomDeck     `json:"CustomDeck,omitempty"`
+	CustomImage         ExhaustiveCustomImageState          `json:"CustomImage,omitempty"`
+	CustomMesh          ExhaustiveCustomMeshState           `json:"CustomMesh,omitempty"`
+	CustomUIAssets      []ExhaustiveCustomAssetState        `json:"CustomUIAssets,omitempty"`
+	DeckIDs             []int                               `json:"DeckIDs,omitempty"`
+	Description         string                              `json:"Description,omitempty"`
+	FogColor            string                              `json:"FogColor,omitempty"`
+	FogHidePointers     bool                                `json:"FogHidePointers,omitempty"`
+	FogOfWar            ExhaustiveFogOfWarSaveState         `json:"FogOfWar,omitempty"`
+	FogOfWarRevealer    ExhaustiveFogOfWarRevealerSaveState `json:"FogOfWarRevealer,omitempty"`
+	FogReverseHiding    bool                                `json:"FogReverseHiding,omitempty"`
+	FogSeethrough       bool                                `json:"FogSeethrough,omitempty"`
+	Grid                bool                                `json:"Grid,omitempty"`
+	GridProjection      bool                                `json:"GridProjection,omitempty"`
+	GUID                string                              `json:"GUID,omitempty"`
+	Hands               bool                                `json:"Hands,omitempty"`
+	HideWhenFaceDown    bool                                `json:"HideWhenFaceDown,omitempty"`
+	JointFixed          ExhaustiveJointFixedState           `json:"JointFixed,omitempty"`
+	JointHinge          ExhaustiveJointHingeState           `json:"JointHinge,omitempty"`
+	JointSpring         ExhaustiveJointSpringState          `json:"JointSpring,omitempty"`
+	Layer               int                                 `json:"Layer,omitempty"`
+	Locked              bool                                `json:"Locked,omitempty"`
+	LuaScript           string                              `json:"LuaScript,omitempty"`
+	LuaScriptState      string                              `json:"LuaScriptState,omitempty"`
+	MaterialIndex       int                                 `json:"MaterialIndex,omitempty"`
+	MeshIndex           int                                 `json:"MeshIndex,omitempty"`
+	Mp3Player           ExhaustiveMp3PlayerState            `json:"Mp3Player,omitempty"`
+	Nickname            string                              `json:"Nickname,omitempty"`
+	Number              int                                 `json:"Number,omitempty"`
+	PhysicsMaterial     ExhaustivePhysicsMaterialState      `json:"PhysicsMaterial,omitempty"`
+	Rigidbody           ExhaustiveRigidbodyState            `json:"Rigidbody,omitempty"`
+	RotationValues      []ExhaustiveRotationValueState      `json:"RotationValues,omitempty"`
+	RPGdead             bool                                `json:"RPGdead,omitempty"`
+	RPGmode             bool                                `json:"RPGmode,omitempty"`
+	SidewaysCard        bool                                `json:"SidewaysCard,omitempty"`
+	Snap                bool                                `json:"Snap,omitempty"`
+	States              map[string]ExhaustiveObjectState    `json:"States,omitempty"`
+	Sticky              bool                                `json:"Sticky,omitempty"`
+	Tablet              ExhaustiveTabletState               `json:"Tablet,omitempty"`
+	Text                ExhaustiveTextState                 `json:"Text,omitempty"`
+	Tooltip             bool                                `json:"Tooltip,omitempty"`
 }
