@@ -33,61 +33,61 @@ func TTSBag(nickname string, objects []ExhaustiveObjectState) *ExhaustiveObjectS
 	return &newbag
 }
 
-func withName(name string) Option {
+func WithName(name string) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.Name = name
 	}
 }
 
-func addDecal(name string, imageURL string, size float32, transform ExhaustiveTransform) Option {
+func AddDecal(name string, imageURL string, size float32, transform ExhaustiveTransform) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.AttachedDecals = append(e.AttachedDecals, ExhaustiveDecalState{Transform: transform, CustomDecal: ExhaustiveCustomDecal{Name: name, ImageURL: imageURL, Size: size}})
 	}
 }
 
-func withScript(script string) Option {
+func WithScript(script string) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.LuaScript = script
 	}
 }
 
-func addCustomDeck(faceURL string, backURL string, i int) Option {
+func AddCustomDeck(faceURL string, backURL string, i int) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.CustomDeck[strconv.Itoa(i)] = ExhaustiveCustomDeck{FaceURL: faceURL, BackURL: backURL, NumWidth: 1, NumHeight: 1}
 	}
 }
 
-func addDeckID(i int) Option {
+func AddDeckID(i int) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.DeckIDs = append(e.DeckIDs, i*100)
 	}
 }
 
-func withNickname(nickname string) Option {
+func WithNickname(nickname string) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.Nickname = nickname
 	}
 }
 
-func withDescription(description string) Option {
+func WithDescription(description string) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.Description = description
 	}
 }
 
-func withCardID(cardID int) Option {
+func WithCardID(cardID int) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.CardID = cardID
 	}
 }
 
-func addXMLUI(ui string) Option {
+func AddXMLUI(ui string) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.XmlUI = ui
 	}
 }
 
-func addContainedObject(objs ...Option) Option {
+func AddContainedObject(objs ...Option) Option {
 	return func(e *ExhaustiveObjectState) {
 		newobj, err := NewTTSObject(objs...)
 		if err == nil {
@@ -96,7 +96,7 @@ func addContainedObject(objs ...Option) Option {
 	}
 }
 
-func withAltLookAngle(x float32, y float32, z float32) Option {
+func WithAltLookAngle(x float32, y float32, z float32) Option {
 	return func(e *ExhaustiveObjectState) {
 		e.AltLookAngle = ExhaustiveVector{X: x, Y: y, Z: z}
 	}
